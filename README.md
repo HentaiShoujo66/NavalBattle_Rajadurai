@@ -10,5 +10,5 @@
 
 ### Contact ###
 
-*Autheur et seul éditeur du dépot : thirusan.rajadurai@cpnv.ch
+*Autheur et seul contributeur du dépot : thirusan.rajadurai@cpnv.ch
 
