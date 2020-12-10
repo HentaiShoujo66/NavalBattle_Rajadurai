@@ -74,12 +74,30 @@ void show_grid() {
 }
 
 void add_boats() {
-    for (int line = 2; line < 7; ++line) {
+    for (line = 2; line < 7; ++line) {                                               //porte-avions
         grid[line][9] = 'X';
 
     }
 
+    for (line = 2; line < 6; ++line) {                                               //croiseur
+        grid[line][7] = 'X';
 
+    }
+
+    for (column = 6; column < 9; ++column) {                                               //first contre-torpilleur
+        grid[0][column] = 'X';
+
+    }
+
+    for (column = 6; column < 9; ++column) {                                               //second1 contre-torpilleur
+        grid[8][column] = 'X';
+
+    }
+
+    for (line = 1; line < 3; ++line) {                                               //croiseur
+        grid[line][0] = 'X';
+
+    }
 }
 
 int Menu() {
