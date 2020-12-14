@@ -223,25 +223,24 @@ void PlayerInput() {
 void verification() {
 
 
-
-    boat1_sunkparts = 0                      //reset the sunkparts parts before boat1's check
+    int boat1_sunkparts = 0;                     //reset the sunkparts parts before boat1's check
     int boat1_part_check;
-    for (boat1_part_check = 1;
-    boat1_part_check < 2; boat_part_check++)       //counts sunk parts to check if boat1 is sunk
+    for (boat1_part_check = 2;
+         boat1_part_check < 7; boat1_part_check++)       //counts sunk parts to check if boat1 is sunk
     {
-        if (playerGrid[boat_part_check][0] == X) {
-            boat1_sunkparts = boat1_sunkparts + 1
+        if (playerGrid[boat1_part_check][9] == 'X') {
+            boat1_sunkparts = boat1_sunkparts + 1;
         }
     }
-    if (boat5_sunkparts == 2) { boat5_sunk = true; }
+    if (boat1_sunkparts == 5) { boat1_sunk = true; }
 
-    boat5_sunkparts = 0                      //reset the sunkparts parts before boat5's check
+    int boat5_sunkparts = 0;                     //reset the sunkparts parts before boat5's check
     int boat5_part_check;
-    for (boat5_part_check = 1;
-         boat5_part_check < 2; boat5_part_check++)       //counts sunk parts to check if boat5 is sunk
+    for (boat5_part_check = 1; boat5_part_check < 3; boat5_part_check++)       //counts sunk parts to check if boat5 is sunk
     {
-        if (playerGrid[boat_part_check][0] == X) {
-            boat5_sunkparts = boat5_sunkparts + 1
+        if (playerGrid[boat5_part_check][0] == 'X') {
+            boat5_sunkparts = boat5_sunkparts + 1;
+            printf("touché\n");
         }
     }
     if (boat5_sunkparts == 2) { boat5_sunk = true; }
@@ -250,14 +249,14 @@ void verification() {
 }
 
 
-
 int main() {
     Menu();
     add_boats();
     show_grid();
-    PlayerInput();
-    verification();
-    PlayerInput();
-    verification();
+    while (boat5_sunk == false) {
+        PlayerInput();
+        verification();
+    }
+    printf("GG!");
     return 0;
 }
