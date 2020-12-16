@@ -15,6 +15,8 @@ int MenuChoice;
 int playercolumn;
 int playerline;
 int line_input_number;
+int sunk_boats=0;
+int new_sunk_boat = 0;
 char column_input_letter;
 char grid[10][10];
 char coord_letter;
@@ -24,6 +26,7 @@ bool boat2_sunk = false;
 bool boat3_sunk = false;
 bool boat4_sunk = false;
 bool boat5_sunk = false;
+bool game_over = false;
 
 void emptyBuffer() {
     int c = 0;
@@ -131,29 +134,29 @@ void show_player_grid() {
 }
 
 void add_boats() {
-    for (line = 2; line < 7; ++line) {                                               //porte-avions (boat1)
+    for (line = 2; line < 7; ++line) {                                               //Carrier (boat1)
         grid[line][9] = 'X';
 
     }
 
-    for (line = 2; line < 6; ++line) {                                               //croiseur (boat2)
+    for (line = 2; line < 6; ++line) {                                               //Battleship (boat2)
         grid[line][7] = 'X';
 
     }
 
     for (column = 6;
-         column < 9; ++column) {                                               //first contre-torpilleur (boat3)
+         column < 9; ++column) {                                               //Cruiser (boat3)
         grid[0][column] = 'X';
 
     }
 
     for (column = 6;
-         column < 9; ++column) {                                               //second1 contre-torpilleur (boat4)
+         column < 9; ++column) {                                               //Submarine (boat4)
         grid[8][column] = 'X';
 
     }
 
-    for (line = 1; line < 3; ++line) {                                               //croiseur (boat5)
+    for (line = 1; line < 3; ++line) {                                               //Destroyer (boat5)
         grid[line][0] = 'X';
 
     }
@@ -189,6 +192,7 @@ void Menu() {
 
 
 void PlayerInput() {
+
     printf("Veuillez choisir une colonne ( de A à J)\n");
     scanf(" %c", &column_input_letter);
     column_input_letter = tolower(column_input_letter);
@@ -208,12 +212,21 @@ void PlayerInput() {
     printf("Ligne choisie : %d\n", line_input_number);
 
 
-    playercolumn = column_input_letter - 'a';
-    playerline = line_input_number - 1;
-    if (grid[playerline][playercolumn] == 'X') {
+    playercolumn = column_input_letter - 'a';                   //conversion of the letter to a number
+    playerline = line_input_number -
+                 1;                         //conversion from the user's column to the grid's column number
+    if (grid[playerline][playercolumn] ==
+        'X') {                //compare user input's location with the hidden grid's value to check the result
         playerGrid[playerline][playercolumn] = 'X';
+        printf("touché!\n");
+        if (new_sunk_boat < sunk_boats )        //verification if it's a new sunk boat
+        {
+            printf("Coulé!\n");
+            new_sunk_boat = new_sunk_boat + 1;
+        }
     } else {
         playerGrid[playerline][playercolumn] = 'O';
+        printf("loupé!\n");
     }
 
     show_player_grid();
@@ -222,7 +235,7 @@ void PlayerInput() {
 
 void verification() {
 
-
+    sunk_boats = 0;
     int boat1_sunkparts = 0;                     //reset the sunkparts parts before boat1's check
     int boat1_part_check;
     for (boat1_part_check = 2;
@@ -232,31 +245,89 @@ void verification() {
             boat1_sunkparts = boat1_sunkparts + 1;
         }
     }
-    if (boat1_sunkparts == 5) { boat1_sunk = true; }
+    if (boat1_sunkparts == 5) {
+        boat1_sunk = true;
+        sunk_boats = sunk_boats + 1;
+    }
+
+
+    int boat2_sunkparts = 0;                     //reset the sunkparts parts before boat2's check
+    int boat2_part_check;
+    for (boat2_part_check = 2;
+         boat2_part_check < 6; boat2_part_check++)       //counts sunk parts to check if boat2 is sunk
+    {
+        if (playerGrid[boat2_part_check][7] == 'X') {
+            boat2_sunkparts = boat2_sunkparts + 1;
+        }
+    }
+    if (boat2_sunkparts == 4) {
+        boat2_sunk = true;
+        sunk_boats = sunk_boats + 1;
+    }
+
+    int boat3_sunkparts = 0;                     //reset the sunkparts parts before boat3's check
+    int boat3_part_check;
+    for (boat3_part_check = 6;
+         boat3_part_check < 9; boat3_part_check++)       //counts sunk parts to check if boat3 is sunk
+    {
+        if (playerGrid[0][boat3_part_check] == 'X') {
+            boat3_sunkparts = boat3_sunkparts + 1;
+        }
+    }
+    if (boat3_sunkparts == 3) {
+        boat3_sunk = true;
+        sunk_boats = sunk_boats + 1;
+    }
+
+    int boat4_sunkparts = 0;                     //reset the sunkparts parts before boat4's check
+    int boat4_part_check;
+    for (boat4_part_check = 6;
+         boat4_part_check < 9; boat4_part_check++)       //counts sunk parts to check if boat4 is sunk
+    {
+        if (playerGrid[8][boat4_part_check] == 'X') {
+            boat4_sunkparts = boat4_sunkparts + 1;
+        }
+    }
+    if (boat4_sunkparts == 3) {
+        boat4_sunk = true;
+        sunk_boats = sunk_boats + 1;
+    }
+
 
     int boat5_sunkparts = 0;                     //reset the sunkparts parts before boat5's check
     int boat5_part_check;
-    for (boat5_part_check = 1; boat5_part_check < 3; boat5_part_check++)       //counts sunk parts to check if boat5 is sunk
+    for (boat5_part_check = 1;
+         boat5_part_check < 3; boat5_part_check++)       //counts sunk parts to check if boat5 is sunk
     {
         if (playerGrid[boat5_part_check][0] == 'X') {
             boat5_sunkparts = boat5_sunkparts + 1;
-            printf("touché\n");
         }
     }
-    if (boat5_sunkparts == 2) { boat5_sunk = true; }
+    if (boat5_sunkparts == 2) {
+        boat5_sunk = true;
+        sunk_boats = sunk_boats + 1;
+    }
 
+    if (sunk_boats == 5) { game_over = true; }       //checks the game over with a count
 
 }
 
 
-int main() {
-    Menu();
-    add_boats();
-    show_grid();
-    while (boat5_sunk == false) {
+void Play(){
+    while (game_over == false) {
         PlayerInput();
         verification();
+        show_grid();
     }
     printf("GG!");
+
+}
+
+int main() {
+
+    add_boats();
+    Menu();
+    Play();
+
     return 0;
 }
