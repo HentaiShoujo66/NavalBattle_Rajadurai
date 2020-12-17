@@ -240,12 +240,6 @@ void PlayerInput() {
         score = score + 1;
         grid[playerline][playercolumn] = 'T';
 
-
-        if (new_sunk_boat < sunk_boats)        //verification if it's a new sunk boat
-        {
-            printf("Coulé!\n");
-            new_sunk_boat = new_sunk_boat + 1;
-        }
     } else {
         if (grid[playerline][playercolumn] == 'T') { printf("Vous avez déjà joué cette case !\n"); }
 
