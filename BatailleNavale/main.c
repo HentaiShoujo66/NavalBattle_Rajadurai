@@ -4,6 +4,7 @@
 *   Version :   [1.0]            *
 ****************************************/
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <windows.h>
 #include <ctype.h>
@@ -17,12 +18,12 @@ static const int SEPARATORSIZE =47;
 
 int line;
 int column;
-int MenuChoice;
 int playercolumn;
 int playerline;
 int line_input_number;
 int sunk_boats = 0;
 int score = 0;
+int GameLoop= 1;
 char column_input_letter;
 char grid[10][10];
 char coord_letter;
@@ -34,6 +35,7 @@ bool boat3_msg = false;
 bool boat4_msg = false;
 bool boat5_msg = false;
 bool game_over = false;
+bool playerLeaving=false;
 
 void emptyBuffer() {
     int c = 0;
@@ -149,7 +151,7 @@ void Bateau() {
  */
 void show_help() {
     int HelpStop;
-    printf("AIDE__________________________\n"
+    printf("\n\n\nAIDE__________________________\n"
            "Règles de la bataille navale :\n"
            "La bataille navale oppose deux joueurs qui s'affrontent. Chacun a une flotte composée de 5 bateaux, qui sont,\nen général, les suivants : 1 porte-avion (5 cases), 1 croiseur (4 cases), 1 contre-torpilleur (3 cases),\n1 sous-marin (3 cases), 1 torpilleur (2 cases).Les bateaux ne doivent pas être collés entre eux. Au début du jeu,\nchaque joueur place ses bateaux sur sa grille.\nCelle-ci est toujours numérotée de 1 à 10 verticalement et de A à J horizontalement. Un à un, les joueurs vont \"tirer\"\nsur une case de l'adversaire : par exemple, B.3 ou encore H.8. Le but est donc de couler les bateaux adverses."
            "\nDans cette version de la bataille navale, vous jouerez contre l'ordinateur,\nvous n'aurez qu'à entrer les coordonnées comme demandé et à les valider tour par tour.\n"
@@ -266,87 +268,67 @@ void add_boats() {
     }
 }
 
-/** \brief Menu - This function treats the main menu
- *
- *
- */
-void Menu() {
-    do {
-        printf("Bienvenue dans la bataille navale !\n\n"
-               "Entrez 1 pour jouer\n"
-               "Entrez 2 pour voir l'aide du jeu\n");
-        scanf("%d", &MenuChoice);
-        if (MenuChoice != 1 && MenuChoice != 2) {
-            while (MenuChoice != 1 && MenuChoice != 2) {
-                emptyBuffer();
-                printf("Veuillez-entrez un choix correct !\n");
-                scanf("%d", &MenuChoice);
-            }
-        }
-        switch (MenuChoice) {
-            case 1 :
-                grid_initialization();
-                show_player_grid();
-                break;
-            case 2 :
-                show_help();
-                break;
-            default:
-                break;
 
-        }
-    } while (MenuChoice != 1);
-
-
-}
 
 /** \brief PlayerInput - This function takes the players input and registers it for a round
  *
  *
  */
 void PlayerInput() {
-
-    column_input_letter = ' ';       //resets the inputs so it doesn't take the same as the previous round
-    printf("Veuillez choisir une colonne ( de A à J)\n");
-    scanf(" %c", &column_input_letter);
+    column_input_letter= ' ';  //resets the inputs so it doesn't take the same as the previous round
+    printf("Veuillez choisir une colonne ( de A à J)\n \n ou s pour retourner au menu principal");
+    column_input_letter= getchar();
     column_input_letter = tolower(column_input_letter);
-    while ((column_input_letter - 'a') < 0 || (column_input_letter - 'a' > 9)) {
-        emptyBuffer();
-        printf("Veuillez choisir une colonne correcte allant de A à J \n");
-        scanf(" %c", &column_input_letter);
-    }
-    printf("Colonne choisie : %c\n\n", toupper(column_input_letter));
+    if (column_input_letter != 's'){
+    while ((column_input_letter  < 'a') || ('j' < column_input_letter) ) {
+        printf("Veuillez choisir une colonne correcte allant de A à J \n(ou s pour retourner au menu principal) \n");
+        column_input_letter= getchar();
+        column_input_letter = tolower(column_input_letter);
+        if(column_input_letter=='s'){break;}
 
-    emptyBuffer();
-    line_input_number = 0;
-    printf("Veuillez choisir une ligne ( de 1 à 10)\n");
-    scanf(" %d", &line_input_number);
-    while (line_input_number < 1 || line_input_number > 10) {
+    }
+    if (column_input_letter != 's') {printf("Colonne choisie : %c\n\n", toupper(column_input_letter));}
+    } else {
+        printf("Retour au menu principal...\n");
+        playerLeaving = true;
+    }
+
+    if (playerLeaving == false) {
         emptyBuffer();
-        printf("Veuillez choisir une ligne correcte allant de 1 à 10 \n");
+        line_input_number = 0;
+        printf("Veuillez choisir une ligne ( de 1 à 10)\n");
         scanf(" %d", &line_input_number);
+        while (line_input_number < 1 || line_input_number > 10) {
+            emptyBuffer();
+            printf("Veuillez choisir une ligne correcte allant de 1 à 10\n");
+            scanf(" %d", &line_input_number);
+        }
+        printf("Ligne choisie : %d\n\n", line_input_number);
     }
-    printf("Ligne choisie : %d\n\n", line_input_number);
+}
 
-
+/** \brief CumputeInput - This function compute the players input and displays the result
+ *
+ *
+ */
+void CumputeInput(){
     playercolumn = column_input_letter - 'a';                   //conversion of the letter to a number
     playerline = line_input_number -1;                         //conversion from the user's column to the grid's column number
     if (PlayerDisplayedGrid[playerline][playercolumn] != ' ') { printf("Vous avez déjà joué cette case !\n"); }
-    else if (grid[playerline][playercolumn] >'0' && grid[playerline][playercolumn] <'6') {         //compare user input's location with the hidden grid's value to check the result
+    else if (grid[playerline][playercolumn] > '0' && grid[playerline][playercolumn] <
+                                                     '6') {         //compare user input's location with the hidden grid's value to check the result
         playerGrid[playerline][playercolumn] = grid[playerline][playercolumn];
         PlayerDisplayedGrid[playerline][playercolumn] = 'X';
         Hit();
         printf("Vous avez touché un bateau!\n\n");
         score = score + 1;
 
+    } else if (grid[playerline][playercolumn] == ' ') {
+        Miss();
+        printf("\nVous avez raté!\n\n");
+        score = score + 1;
+        PlayerDisplayedGrid[playerline][playercolumn] = 'O';
     }
-
-    else if (grid[playerline][playercolumn] == ' ') {
-            Miss();
-            printf("\nVous avez raté!\n\n");
-            score = score + 1;
-            PlayerDisplayedGrid[playerline][playercolumn] = 'O';
-        }
 
 
     show_player_grid();
@@ -459,13 +441,58 @@ void verification() {
  *
  */
 void Play() {
+    grid_initialization();
+    show_player_grid();
+    add_boats();
     while (game_over == false) {
         PlayerInput();
-        verification();
+        if(playerLeaving==false) {
+            CumputeInput();
+            verification();
+        }
+        else{break;}
     }
-    Bravo();
-    printf("Vous avez gagné !\n");
-    printf("Votre score est de %d.\n", score);
+    if(playerLeaving==false) {
+        Bravo();
+        printf("Vous avez gagné !\n");
+        printf("Votre score est de %d.\n", score);
+    }
+    GameLoop=1;
+}
+
+/** \brief Menu - This function treats the main menu
+ *
+ *
+ */
+void Menu() {
+    int MenuChoice;
+    do {
+        printf("Bienvenue dans la bataille navale !\n\n"
+               "Entrez 1 pour jouer\n"
+               "Entrez 2 pour voir l'aide du jeu\n"
+               "Entrez 3 pour quitter le jeu\n");
+        scanf("%d", &MenuChoice);
+        if (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3) {
+            while (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3) {
+                emptyBuffer();
+                printf("Veuillez-entrez un choix correct !\n");
+                scanf("%d", &MenuChoice);
+            }
+        }
+        switch (MenuChoice) {
+            case 1 : Play();
+
+                break;
+            case 2 :
+                show_help();
+                break;
+            case 3 :
+                exit(0);
+            default:
+                break;
+
+        }
+    } while (MenuChoice != 1);
 
 
 }
@@ -475,12 +502,13 @@ void Play() {
  *
  */
 int main() {
-
     SetConsoleOutputCP(CP_UTF8);
     Bateau();
-    Menu();
-    add_boats();
-    Play();
+    while(GameLoop== 1){        // the game loop var let's us avoid a bug where the Menu loops itself before the game is finished
+        GameLoop= 0;
+        Menu();
+    }
+
 
     return 0;
 }
