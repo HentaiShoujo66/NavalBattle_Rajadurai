@@ -24,6 +24,7 @@ int line_input_number;
 int sunk_boats = 0;
 int score = 0;
 int GameLoop= 1;
+char dataToBeRead[1000];
 char column_input_letter;
 char grid[10][10];
 char coord_letter;
@@ -235,35 +236,44 @@ void show_player_grid() {
     printf("\n\n\n");
 }
 
+/** \brief MapLoad - This function adds boats to the computer's grid
+ *
+ *
+ */
+ void MapLoad(){
+    // Declare the file pointer
+    FILE *filePointer ;
+    // Open the existing file test.c using fopen()
+    // in read mode using "r" attribute
+    filePointer = fopen("grids/grid1.txt", "r") ;
+
+    // Check if this filePointer is null
+    // which maybe if the file does not exist
+    if ( filePointer == NULL )
+    {
+        printf( "Le chargement de la carte a échoué...\n" ) ;
+    }
+    else {
+        // Read the dataToBeRead from the file
+        // using fgets() method
+        fgets(dataToBeRead, 1000, filePointer);
+
+        fclose(filePointer);
+    }
+ }
+
 /** \brief add_boats - This function adds boats to the computer's grid
  *
  *
  */
 void add_boats() {
-    for (line = 2; line < 7; ++line) {                                               //Carrier (boat1)
-        grid[line][9] = '1';
+    int i=0;
+    for (int line = 0; line < 10; ++line) {
+        for (int column = 0; column < 10; ++column) {
+            grid[line][column]=dataToBeRead[i];
+            i=i+1;
 
-    }
-
-    for (line = 2; line < 6; ++line) {                                               //Battleship (boat2)
-        grid[line][7] = '2';
-
-    }
-
-    for (column = 6;
-         column < 9; ++column) {                                               //Cruiser (boat3)
-        grid[0][column] = '3';
-
-    }
-
-    for (column = 6;
-         column < 9; ++column) {                                               //Submarine (boat4)
-        grid[8][column] = '4';
-
-    }
-
-    for (line = 1; line < 3; ++line) {                                               //Destroyer (boat5)
-        grid[line][0] = '5';
+        }
 
     }
 }
@@ -275,23 +285,23 @@ void add_boats() {
  *
  */
 void PlayerInput() {
-    column_input_letter= ' ';  //resets the inputs so it doesn't take the same as the previous round
-    printf("Veuillez choisir une colonne ( de A à J)\n \n ou s pour retourner au menu principal");
-    column_input_letter= getchar();
+    column_input_letter = ' ';       //resets the inputs so it doesn't take the same as the previous round
+    printf("Veuillez choisir une colonne ( de A à J)\n");
+    scanf(" %c", &column_input_letter);
     column_input_letter = tolower(column_input_letter);
-    if (column_input_letter != 's'){
-    while ((column_input_letter  < 'a') || ('j' < column_input_letter) ) {
-        printf("Veuillez choisir une colonne correcte allant de A à J \n(ou s pour retourner au menu principal) \n");
-        column_input_letter= getchar();
-        column_input_letter = tolower(column_input_letter);
-        if(column_input_letter=='s'){break;}
-
+    if (column_input_letter!='s') {
+        while ((column_input_letter - 'a') < 0 || (column_input_letter - 'a' > 9)) {
+            emptyBuffer();
+            printf("Veuillez choisir une colonne correcte allant de A à J \n");
+            scanf(" %c", &column_input_letter);
+            column_input_letter = tolower(column_input_letter);
+        }
+        printf("Colonne choisie : %c\n\n", toupper(column_input_letter));
     }
-    if (column_input_letter != 's') {printf("Colonne choisie : %c\n\n", toupper(column_input_letter));}
-    } else {
+    else {
         printf("Retour au menu principal...\n");
         playerLeaving = true;
-    }
+        }
 
     if (playerLeaving == false) {
         emptyBuffer();
@@ -441,7 +451,10 @@ void verification() {
  *
  */
 void Play() {
+    score= 0;
+    playerLeaving=true;
     grid_initialization();
+    MapLoad();
     show_player_grid();
     add_boats();
     while (game_over == false) {
@@ -504,10 +517,10 @@ void Menu() {
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     Bateau();
-    while(GameLoop== 1){        // the game loop var let's us avoid a bug where the Menu loops itself before the game is finished
+    while(GameLoop== 1){// the game loop var let's us avoid a bug where the Menu loops itself before the game is finished
         GameLoop= 0;
         Menu();
-    }
+}
 
 
     return 0;
