@@ -238,13 +238,13 @@ void show_player_grid() {
     printf("\n\n\n");
 }
 
-/** \brief MapLoad - This function adds boats to the computer's grid
+/** \brief MapLoad - This function loads a random grid from a file
  *
  *
  */
  void MapLoad(){
      srand(time(0));
-     int random_number=rand()%3+1; //random nunmber for the map selection
+     int random_number=rand()%3+1; //random number for the map selection
 
     // Declare the file pointer
     FILE *filePointer ;
@@ -491,7 +491,7 @@ void RegisterScore(){
     }
 }
 
-/** \brief ShowScore - This function registers the score
+/** \brief ShowScore - This function shows the score
  *
  *
  */
