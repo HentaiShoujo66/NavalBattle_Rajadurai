@@ -26,7 +26,7 @@ int sunk_boats = 0;
 int score = 0;
 int GameLoop= 1;
 char playerName[15]="Unknown_Player";
-char dataToBeRead[1000];
+char gridToBeRead[1000];
 char column_input_letter;
 char grid[10][10];
 char coord_letter;
@@ -271,7 +271,7 @@ void show_player_grid() {
     else {
         // Read the dataToBeRead from the file
         // using fgets() method
-        fgets(dataToBeRead, 1000, filePointer);
+        fgets(gridToBeRead, 1000, filePointer);
 
         fclose(filePointer);
     }
@@ -285,7 +285,7 @@ void add_boats() {
     int i=0;
     for (int line = 0; line < GRIDHEIGHT; ++line) {
         for (int column = 0; column < GRIDLENGTH; ++column) {
-            grid[line][column]=dataToBeRead[i];
+            grid[line][column]=gridToBeRead[i];
             i=i+1;
 
         }
@@ -491,6 +491,53 @@ void RegisterScore(){
     }
 }
 
+/** \brief ShowScore - This function registers the score
+ *
+ *
+ */
+void ShowScore(){
+    // Declare the file pointer
+    FILE *filePointer ;
+
+    // Declare the variable for the data to be read from file
+    char scoreToBeRead[1000];
+
+    // Open the existing file GfgTest.c using fopen()
+    // in read mode using "r" attribute
+    filePointer = fopen("../scores.txt", "r") ;
+
+    // Check if this filePointer is null
+    // which maybe if the file does not exist
+    if ( filePointer == NULL )
+    {
+        printf( "Les scores n'ont pas pu être ouverts\n\n" ) ;
+    }
+    else
+    {
+        // Read the scoreToBeRead from the file
+        // using fgets() method
+        while( fgets ( scoreToBeRead, 1000, filePointer ) != NULL )
+        {
+
+            // Print the dataToBeRead
+            printf( "%s" , scoreToBeRead ) ;
+        }
+
+        // Closing the file using fclose()
+        fclose(filePointer) ;
+        int scoreStop;
+        printf("\n\nEntrez 0 pour retourner au menu principal.\n");
+        scanf(" %d", &scoreStop);
+        while (scoreStop != 0) {
+            emptyBuffer();
+            printf("Erreur, veuillez entrer 0 pour retrouner au menu principal\n");
+            scanf(" %d", &scoreStop);
+        }
+
+    }
+
+}
+
 /** \brief Play - This function plays and ends the game
  *
  *
@@ -556,7 +603,7 @@ void Play() {
 void Menu() {
     int MenuChoice;
     do {
-        printf("Bienvenue dans la bataille navale !\n\n"
+        printf("\n\n\nBienvenue dans la bataille navale !\n\n"
                "Entrez 1 pour jouer\n"
                "Entrez 2 pour voir l'aide du jeu\n"
                "Entrez 3 pour changer votre pseudo\n"
@@ -580,7 +627,7 @@ void Menu() {
                 PlayerNameSetting();
                 break;
             case 4:
-
+                ShowScore();
                 break;
             case 5 :
                 exit(0);
