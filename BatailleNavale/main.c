@@ -330,7 +330,15 @@ void PlayerInput() {
         printf("Ligne choisie : %d\n\n", line_input_number);
     }
 }
-
+/** \brief GetTimeAndDate - This function compute the players input and displays the result
+ *
+ *
+ */
+ void GetTimeAndDate(){
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    printf("now: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+ }
 /** \brief CumputeInput - This function compute the players input and displays the result
  *
  *
@@ -621,6 +629,7 @@ void Menu() {
             case 1 : Play();
                 break;
             case 2 :
+                GetTimeAndDate();
                 show_help();
                 break;
             case 3:
