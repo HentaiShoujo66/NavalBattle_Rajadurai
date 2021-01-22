@@ -460,6 +460,37 @@ void verification() {
 
 }
 
+/** \brief RegisterScore - This function registers the score
+ *
+ *
+ */
+void RegisterScore(){
+    // Declare the file pointer
+    FILE *filePointer ;
+
+    // Open the existing file GfgTest.c using fopen()
+    // in write mode using "w" attribute
+    filePointer = fopen("../scores.txt", "a") ;
+
+    // Check if this filePointer is null
+    // which maybe if the file does not exist
+    if ( filePointer == NULL )
+    {
+        printf( "Les scores n'ont pas pu être chargés." ) ;
+    }
+    else
+    {
+
+        fprintf(filePointer,"%s                                     %d\n",playerName,score);
+
+
+        // Closing the file using fclose()
+        fclose(filePointer) ;
+
+        printf("Votre score a été enregistré\n\n");
+    }
+}
+
 /** \brief Play - This function plays and ends the game
  *
  *
@@ -491,7 +522,8 @@ void Play() {
     if(playerLeaving==false) {
         Bravo();
         printf("Vous avez gagné !\n");
-        printf("Votre score est de %d.\n", score);
+        printf("Votre score est de %d.\n\n", score);
+        RegisterScore();
         playerLeaving=true;
         sunk_boats = 0;
         boat1_msg=false;
@@ -507,13 +539,15 @@ void Play() {
  *
  *
  */
- void PlayerName(){
+ void PlayerNameSetting(){
      printf("Veuillez entrez un pseudo: (seul les 15 premiers charactères seront pris ! )\n");
      scanf("%s", &playerName);
      printf("Le pseudo du joueur est désormais: %s \n", playerName);
 
 
  }
+
+
 
 /** \brief Menu - This function treats the main menu
  *
@@ -532,7 +566,7 @@ void Menu() {
         if (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3 && MenuChoice != 4 && MenuChoice != 5) {            //Using and != to avoid a big endless loop bug
             while (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3 && MenuChoice != 4 && MenuChoice != 5) {
                 emptyBuffer();
-                printf("Veuillez-entrez un choix correct !\n");
+                printf("Veuillez-entrez un choix correct !\n\n\n");
                 scanf("%d", &MenuChoice);
             }
         }
@@ -543,9 +577,10 @@ void Menu() {
                 show_help();
                 break;
             case 3:
-                PlayerName();
+                PlayerNameSetting();
                 break;
             case 4:
+
                 break;
             case 5 :
                 exit(0);
