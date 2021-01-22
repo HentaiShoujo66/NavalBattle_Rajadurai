@@ -25,7 +25,7 @@ int line_input_number;
 int sunk_boats = 0;
 int score = 0;
 int GameLoop= 1;
-char playerName;
+char playerName[15]="Unknown_Player";
 char dataToBeRead[1000];
 char column_input_letter;
 char grid[10][10];
@@ -508,7 +508,9 @@ void Play() {
  *
  */
  void PlayerName(){
-     printf("Veuillez entrez un pseudo:\n");
+     printf("Veuillez entrez un pseudo: (seul les 15 premiers charactères seront pris ! )\n");
+     scanf("%s", &playerName);
+     printf("Le pseudo du joueur est désormais: %s \n", playerName);
 
 
  }
@@ -523,10 +525,12 @@ void Menu() {
         printf("Bienvenue dans la bataille navale !\n\n"
                "Entrez 1 pour jouer\n"
                "Entrez 2 pour voir l'aide du jeu\n"
-               "Entrez 3 pour quitter le jeu\n");
+               "Entrez 3 pour changer votre pseudo\n"
+               "Entrez 4 pour voir les scores précédents\n"
+               "Entrez 5 pour quitter le jeu\n");
         scanf("%d", &MenuChoice);
-        if (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3) {
-            while (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3) {
+        if (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3 && MenuChoice != 4 && MenuChoice != 5) {            //Using and != to avoid a big endless loop bug
+            while (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3 && MenuChoice != 4 && MenuChoice != 5) {
                 emptyBuffer();
                 printf("Veuillez-entrez un choix correct !\n");
                 scanf("%d", &MenuChoice);
@@ -538,7 +542,12 @@ void Menu() {
             case 2 :
                 show_help();
                 break;
-            case 3 :
+            case 3:
+                PlayerName();
+                break;
+            case 4:
+                break;
+            case 5 :
                 exit(0);
             default:
                 break;
