@@ -298,10 +298,9 @@ void PlayerInput() {
         }
         printf("Colonne choisie : %c\n\n", toupper(column_input_letter));
     }
-    else {
-        printf("Retour au menu principal...\n");
-        playerLeaving = true;
-        }
+    else if (column_input_letter=='s'){printf("Retour au menu principal...\n");
+        playerLeaving = true;}
+
 
     if (playerLeaving == false) {
         emptyBuffer();
@@ -451,8 +450,8 @@ void verification() {
  *
  */
 void Play() {
+    playerLeaving=false;
     score= 0;
-    playerLeaving=true;
     grid_initialization();
     MapLoad();
     show_player_grid();
@@ -463,12 +462,27 @@ void Play() {
             CumputeInput();
             verification();
         }
-        else{break;}
+        else{
+            sunk_boats = 0;
+            boat1_msg=false;
+            boat2_msg=false;
+            boat3_msg=false;
+            boat4_msg=false;
+            boat5_msg=false;
+            break;
+        }
     }
     if(playerLeaving==false) {
         Bravo();
         printf("Vous avez gagné !\n");
         printf("Votre score est de %d.\n", score);
+        playerLeaving=true;
+        sunk_boats = 0;
+        boat1_msg=false;
+        boat2_msg=false;
+        boat3_msg=false;
+        boat4_msg=false;
+        boat5_msg=false;
     }
     GameLoop=1;
 }
@@ -494,7 +508,6 @@ void Menu() {
         }
         switch (MenuChoice) {
             case 1 : Play();
-
                 break;
             case 2 :
                 show_help();
@@ -516,6 +529,7 @@ void Menu() {
  */
 int main() {
     SetConsoleOutputCP(CP_UTF8);
+    setbuf(stdout,NULL);
     Bateau();
     while(GameLoop== 1){// the game loop var let's us avoid a bug where the Menu loops itself before the game is finished
         GameLoop= 0;
