@@ -9,10 +9,11 @@
 #include <windows.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <time.h>
 
-static const int GRIDLENGTH = 10;
-static const int GRIDHEIGHT = 10;
-static const int SEPARATORSIZE =47;
+const int GRIDLENGTH = 10;
+const int GRIDHEIGHT = 10;
+const int SEPARATORSIZE =47;
 
 
 
@@ -24,6 +25,7 @@ int line_input_number;
 int sunk_boats = 0;
 int score = 0;
 int GameLoop= 1;
+char playerName;
 char dataToBeRead[1000];
 char column_input_letter;
 char grid[10][10];
@@ -216,7 +218,7 @@ void show_player_grid() {
     for (line = 0; line < 9; line++) {
         printf("|| %d ", coord_number);
         coord_number++;
-        for (column = 0; column < 10; ++column) { printf("| %c ", PlayerDisplayedGrid[line][column]); }
+        for (column = 0; column < GRIDLENGTH; ++column) { printf("| %c ", PlayerDisplayedGrid[line][column]); }
         printf("||\n");
         for (int horizontal_separation = 0; horizontal_separation < SEPARATORSIZE; ++horizontal_separation) {
             printf("_");
@@ -227,7 +229,7 @@ void show_player_grid() {
 
 
     printf("||10 ");
-    for (column = 0; column < 10; ++column) { printf("| %c ", PlayerDisplayedGrid[9][column]); }
+    for (column = 0; column < GRIDLENGTH; ++column) { printf("| %c ", PlayerDisplayedGrid[GRIDHEIGHT-1][column]); }
     printf("||\n");
     for (int horizontal_separation = 0; horizontal_separation < SEPARATORSIZE; ++horizontal_separation) {
         printf("_");
@@ -241,11 +243,24 @@ void show_player_grid() {
  *
  */
  void MapLoad(){
+     srand(time(0));
+     int random_number=rand()%3+1; //random nunmber for the map selection
+
     // Declare the file pointer
     FILE *filePointer ;
     // Open the existing file test.c using fopen()
     // in read mode using "r" attribute
-    filePointer = fopen("grids/grid1.txt", "r") ;
+    switch (random_number) {
+        case 1 : filePointer = fopen("grids/grid1.txt", "r") ;
+            break;
+        case 2 : filePointer = fopen("grids/grid2.txt", "r") ;
+            break;
+        case 3 : filePointer = fopen("grids/grid3.txt", "r") ;
+            break;
+        default: printf("Erreur durant la séléction de la carte.\n");
+                 exit(0);
+    }
+
 
     // Check if this filePointer is null
     // which maybe if the file does not exist
@@ -268,8 +283,8 @@ void show_player_grid() {
  */
 void add_boats() {
     int i=0;
-    for (int line = 0; line < 10; ++line) {
-        for (int column = 0; column < 10; ++column) {
+    for (int line = 0; line < GRIDHEIGHT; ++line) {
+        for (int column = 0; column < GRIDLENGTH; ++column) {
             grid[line][column]=dataToBeRead[i];
             i=i+1;
 
@@ -332,7 +347,7 @@ void CumputeInput(){
         printf("Vous avez touché un bateau!\n\n");
         score = score + 1;
 
-    } else if (grid[playerline][playercolumn] == ' ') {
+    } else if (grid[playerline][playercolumn] == '0') {
         Miss();
         printf("\nVous avez raté!\n\n");
         score = score + 1;
@@ -454,8 +469,9 @@ void Play() {
     score= 0;
     grid_initialization();
     MapLoad();
-    show_player_grid();
     add_boats();
+    show_player_grid();
+
     while (game_over == false) {
         PlayerInput();
         if(playerLeaving==false) {
@@ -486,6 +502,16 @@ void Play() {
     }
     GameLoop=1;
 }
+
+/** \brief PlayerName - This function lets the player change his name
+ *
+ *
+ */
+ void PlayerName(){
+     printf("Veuillez entrez un pseudo:\n");
+
+
+ }
 
 /** \brief Menu - This function treats the main menu
  *
