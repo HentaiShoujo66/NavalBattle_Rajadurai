@@ -251,11 +251,11 @@ void show_player_grid() {
     // Open the existing file test.c using fopen()
     // in read mode using "r" attribute
     switch (random_number) {
-        case 1 : filePointer = fopen("grids/grid1.txt", "r") ;
+        case 1 : filePointer = fopen("../grids/grid1.txt", "r") ;
             break;
-        case 2 : filePointer = fopen("grids/grid2.txt", "r") ;
+        case 2 : filePointer = fopen("../grids/grid2.txt", "r") ;
             break;
-        case 3 : filePointer = fopen("grids/grid3.txt", "r") ;
+        case 3 : filePointer = fopen("../grids/grid3.txt", "r") ;
             break;
         default: printf("Erreur durant la séléction de la carte.\n");
                  exit(0);
