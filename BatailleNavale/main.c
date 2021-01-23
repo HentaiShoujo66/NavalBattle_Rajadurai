@@ -39,6 +39,8 @@ bool boat4_msg = false;
 bool boat5_msg = false;
 bool game_over = false;
 bool playerLeaving=false;
+// Declare the log pointer
+FILE *logPointer ;
 
 void emptyBuffer() {
     int c = 0;
@@ -301,13 +303,13 @@ void add_boats() {
  */
 void PlayerInput() {
     column_input_letter = ' ';       //resets the inputs so it doesn't take the same as the previous round
-    printf("Veuillez choisir une colonne ( de A à J)\n");
+    printf("Veuillez choisir une colonne ( de A à J) ou s pour quitter la partie\n");
     scanf(" %c", &column_input_letter);
     column_input_letter = tolower(column_input_letter);
     if (column_input_letter!='s') {
         while ((column_input_letter - 'a') < 0 || (column_input_letter - 'a' > 9)) {
             emptyBuffer();
-            printf("Veuillez choisir une colonne correcte allant de A à J \n");
+            printf("Veuillez choisir une colonne correcte (de A à J) ou s pour quitter la partie \n");
             scanf(" %c", &column_input_letter);
             column_input_letter = tolower(column_input_letter);
         }
@@ -330,15 +332,7 @@ void PlayerInput() {
         printf("Ligne choisie : %d\n\n", line_input_number);
     }
 }
-/** \brief GetTimeAndDate - This function compute the players input and displays the result
- *
- *
- */
- void GetTimeAndDate(){
-    time_t t = time(NULL);
-    struct tm tm = *localtime(&t);
-    printf("now: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
- }
+
 /** \brief CumputeInput - This function compute the players input and displays the result
  *
  *
@@ -354,10 +348,13 @@ void CumputeInput(){
         Hit();
         printf("Vous avez touché un bateau!\n\n");
         score = score + 1;
+        fprintf(logPointer,"Tour %d : Le joueur a touché un bateau!\n",score);
+
 
     } else if (grid[playerline][playercolumn] == '0') {
         Miss();
         printf("\nVous avez raté!\n\n");
+        fprintf(logPointer,"Tour %d : Le joueur a raté\n",score);
         score = score + 1;
         PlayerDisplayedGrid[playerline][playercolumn] = 'O';
     }
@@ -387,6 +384,7 @@ void verification() {
         {
             Boom();
             printf("Porte-avions coulé!\n");
+            fprintf(logPointer,"Tour %d : Le joueur a coulé le Porte-avions \n",score);
             boat1_msg = true;
         }
         sunk_boats = sunk_boats + 1;
@@ -407,6 +405,7 @@ void verification() {
         if (boat2_msg == false) {
             Boom();
             printf("Croiseur coulé \n");
+            fprintf(logPointer,"Tour %d : Le joueur a coulé le Croiseur \n",score);
             boat2_msg = true;
         }
     }
@@ -424,6 +423,7 @@ void verification() {
         if (boat3_msg == false) {
             Boom();
             printf("Contre-torpilleur 1 coulé \n");
+            fprintf(logPointer,"Tour %d : Le joueur a coulé le Contre-torpilleur 1 \n",score);
             boat3_msg = true;
         }
     }
@@ -441,6 +441,7 @@ void verification() {
         if (boat4_msg == false) {
             Boom();
             printf("Contre-torpilleur 2 coulé\n");
+            fprintf(logPointer,"Tour %d : Le joueur a coulé le Contre-torpilleur 2 \n",score);
             boat4_msg = true;
         }
     }
@@ -459,6 +460,7 @@ void verification() {
         if (boat5_msg == false) {
             Boom();
             printf("Torpilleur coulé ! \n");
+            fprintf(logPointer,"Tour %d : Le joueur a coulé le Torpilleur \n",score);
             boat5_msg = true;
         }
 
@@ -546,6 +548,69 @@ void ShowScore(){
 
 }
 
+/** \brief LogStart - This function logs the start of the game
+ *
+ *
+ */
+void LogStart(){
+    for (int topSeperator = 0; topSeperator < SEPARATORSIZE; ++topSeperator) {
+        fprintf(logPointer,"__");
+
+    }
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    fprintf(logPointer,"\n\n Début de la partie : %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+
+    for (int botSeperator = 0; botSeperator < SEPARATORSIZE; ++botSeperator) {
+        fprintf(logPointer,"__");
+
+    }
+
+}
+
+/** \brief LogEnd - This function logs the end of the game
+ *
+ *
+ */
+void LogEnd(){
+    for (int topSeperator = 0; topSeperator < SEPARATORSIZE; ++topSeperator) {
+        fprintf(logPointer,"__");
+
+    }
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    fprintf(logPointer,"\n\n Fin de la partie : %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+
+    for (int botSeperator = 0; botSeperator < SEPARATORSIZE; ++botSeperator) {
+        fprintf(logPointer,"__");
+
+    }
+
+}
+
+/** \brief LogLeave - This function logs the end of the game when the player leaves the game before the end
+ *
+ *
+ */
+void LogLeave(){
+    for (int topSeperator = 0; topSeperator < SEPARATORSIZE; ++topSeperator) {
+        fprintf(logPointer,"__");
+
+    }
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    fprintf(logPointer,"\n\n %s a quitté la partie en cours : %d-%02d-%02d %02d:%02d:%02d\n",playerName, tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+
+
+    for (int botSeperator = 0; botSeperator < SEPARATORSIZE; ++botSeperator) {
+        fprintf(logPointer,"__");
+
+    }
+
+}
+
 /** \brief Play - This function plays and ends the game
  *
  *
@@ -557,6 +622,19 @@ void Play() {
     MapLoad();
     add_boats();
     show_player_grid();
+
+    // Open the existing file GfgTest.c using fopen()
+    // in write mode using "w" attribute
+    logPointer = fopen("../log.txt", "a") ;
+
+    // Check if this logPointer is null
+    // which maybe if the file does not exist
+    if ( logPointer == NULL )
+    {
+        printf( "Les logs n'ont pas pu être chargés." ) ;
+    }
+
+    LogStart();
 
     while (game_over == false) {
         PlayerInput();
@@ -571,6 +649,9 @@ void Play() {
             boat3_msg=false;
             boat4_msg=false;
             boat5_msg=false;
+            LogLeave();
+            // Closing the log using fclose()
+            fclose(logPointer) ;
             break;
         }
     }
@@ -578,6 +659,9 @@ void Play() {
         Bravo();
         printf("Vous avez gagné !\n");
         printf("Votre score est de %d.\n\n", score);
+        LogEnd();
+        // Closing the log using fclose()
+        fclose(logPointer) ;
         RegisterScore();
         playerLeaving=true;
         sunk_boats = 0;
@@ -629,7 +713,6 @@ void Menu() {
             case 1 : Play();
                 break;
             case 2 :
-                GetTimeAndDate();
                 show_help();
                 break;
             case 3:
