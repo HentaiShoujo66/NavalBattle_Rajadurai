@@ -42,7 +42,11 @@ bool playerLeaving=false;
 // Declare the log pointer
 FILE *logPointer ;
 
-void emptyBuffer() {
+/** \brief EmptyBuffer - This function empties the buffer
+ *
+ *
+ */
+void EmptyBuffer() {
     int c = 0;
     while (c != '\n' && c != EOF) {
         c = getchar();
@@ -150,11 +154,11 @@ void Bateau() {
            "___________¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶¶\n\n");
 }
 
-/** \brief show_help - This function displays the player's help for the battleship
+/** \brief ShowHelp - This function displays the player's help for the battleship
  *
  *
  */
-void show_help() {
+void ShowHelp() {
     int HelpStop;
     printf("\n\n\nAIDE__________________________\n"
            "Règles de la bataille navale :\n"
@@ -164,17 +168,17 @@ void show_help() {
     printf("Entrez 0 pour retourner au menu principal.\n");
     scanf(" %d", &HelpStop);
     while (HelpStop != 0) {
-        emptyBuffer();
+        EmptyBuffer();
         printf("Erreur, veuillez entrer 0 pour retrouner au menu principal\n");
         scanf(" %d", &HelpStop);
     }
 }
 
-/** \brief grid_initialization - This function initializes the player's and the computer's grid
+/** \brief GridInitialization - This function initializes the player's and the computer's grid
  *
  *
  */
-void grid_initialization() {
+void GridInitialization() {
     for (line = 0; line < GRIDHEIGHT; line++) {                          //grid ini
         for (column = 0; column < GRIDLENGTH; ++column) {
             grid[line][column] = ' ';
@@ -199,11 +203,11 @@ void grid_initialization() {
 
 }
 
-/** \brief show_player_grid - This function displays the player's grid
+/** \brief ShowPlayerGrid - This function displays the player's grid
  *
  *
  */
-void show_player_grid() {
+void ShowPlayerGrid() {
     printf("     ");
     for (coordLetter = 'A'; coordLetter <= 'J'; ++coordLetter) {
         printf("| %c ", coordLetter);
@@ -279,11 +283,11 @@ void show_player_grid() {
     }
  }
 
-/** \brief add_boats - This function adds boats to the computer's grid
+/** \brief AddBoats - This function adds boats to the computer's grid
  *
  *
  */
-void add_boats() {
+void AddBoats() {
     int i=0;
     for (int line = 0; line < GRIDHEIGHT; ++line) {
         for (int column = 0; column < GRIDLENGTH; ++column) {
@@ -308,7 +312,7 @@ void PlayerInput() {
     columnInputLetter = tolower(columnInputLetter);
     if (columnInputLetter != 's') {
         while ((columnInputLetter - 'a') < 0 || (columnInputLetter - 'a' > 9)) {
-            emptyBuffer();
+            EmptyBuffer();
             printf("Veuillez choisir une colonne correcte (de A à J) ou s pour quitter la partie \n");
             scanf(" %c", &columnInputLetter);
             columnInputLetter = tolower(columnInputLetter);
@@ -320,12 +324,12 @@ void PlayerInput() {
 
 
     if (playerLeaving == false) {
-        emptyBuffer();
+        EmptyBuffer();
         lineInputNumber = 0;
         printf("Veuillez choisir une ligne ( de 1 à 10)\n");
         scanf(" %d", &lineInputNumber);
         while (lineInputNumber < 1 || lineInputNumber > 10) {
-            emptyBuffer();
+            EmptyBuffer();
             printf("Veuillez choisir une ligne correcte allant de 1 à 10\n");
             scanf(" %d", &lineInputNumber);
         }
@@ -360,7 +364,7 @@ void CumputeInput(){
     }
 
 
-    show_player_grid();
+    ShowPlayerGrid();
 
 }
 
@@ -368,7 +372,7 @@ void CumputeInput(){
  *
  *
  */
-void verification() {
+void Verification() {
 
     sunkBoats = 0;
     int boat1_sunkparts = 0;                     //reset the sunkparts parts before boat1's check
@@ -539,7 +543,7 @@ void ShowScore(){
         printf("\n\nEntrez 0 pour retourner au menu principal.\n");
         scanf(" %d", &scoreStop);
         while (scoreStop != 0) {
-            emptyBuffer();
+            EmptyBuffer();
             printf("Erreur, veuillez entrer 0 pour retrouner au menu principal\n");
             scanf(" %d", &scoreStop);
         }
@@ -619,10 +623,10 @@ void GameIni(){
     gameOver=false;
     playerLeaving=false;
     score= 0;
-    grid_initialization();
+    GridInitialization();
     MapLoad();
-    add_boats();
-    show_player_grid();
+    AddBoats();
+    ShowPlayerGrid();
 
     // Open the existing file GfgTest.c using fopen()
     // in write mode using "w" attribute
@@ -661,7 +665,7 @@ void Play() {
         PlayerInput();
         if(playerLeaving==false) {
             CumputeInput();
-            verification();
+            Verification();
         }
         else{
             BoatMsgReset();
@@ -685,7 +689,7 @@ void Play() {
     gameLoop=1;
 }
 
-/** \brief PlayerName - This function lets the player change his name
+/** \brief PlayerNameSetting - This function lets the player change his name
  *
  *
  */
@@ -715,7 +719,7 @@ void Menu() {
         scanf("%d", &MenuChoice);
         if (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3 && MenuChoice != 4 && MenuChoice != 5) {            //Using and != to avoid a big endless loop bug
             while (MenuChoice != 1 && MenuChoice != 2 && MenuChoice != 3 && MenuChoice != 4 && MenuChoice != 5) {
-                emptyBuffer();
+                EmptyBuffer();
                 printf("Veuillez-entrez un choix correct !\n\n\n");
                 scanf("%d", &MenuChoice);
             }
@@ -724,7 +728,7 @@ void Menu() {
             case 1 : Play();
                 break;
             case 2 :
-                show_help();
+                ShowHelp();
                 break;
             case 3:
                 PlayerNameSetting();
