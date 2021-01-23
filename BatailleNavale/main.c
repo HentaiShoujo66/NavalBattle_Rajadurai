@@ -13,31 +13,31 @@
 
 const int GRIDLENGTH = 10;
 const int GRIDHEIGHT = 10;
-const int SEPARATORSIZE =47;
+const int SEPARATORSIZE = 47;
 
 
 
 int line;
 int column;
-int playercolumn;
-int playerline;
-int line_input_number;
-int sunk_boats = 0;
+int playerColumn;
+int playerLine;
+int lineInputNumber;
+int sunkBoats = 0;
 int score = 0;
-int GameLoop= 1;
+int gameLoop= 1;
 char playerName[15]="Unknown_Player";
 char gridToBeRead[1000];
-char column_input_letter;
+char columnInputLetter;
 char grid[10][10];
-char coord_letter;
+char coordLetter;
 char playerGrid[10][10];
 char PlayerDisplayedGrid[10][10];
-bool boat1_msg = false;
-bool boat2_msg = false;
-bool boat3_msg = false;
-bool boat4_msg = false;
-bool boat5_msg = false;
-bool game_over = false;
+bool boat1Msg = false;
+bool boat2Msg = false;
+bool boat3Msg = false;
+bool boat4Msg = false;
+bool boat5Msg = false;
+bool gameOver = false;
 bool playerLeaving=false;
 // Declare the log pointer
 FILE *logPointer ;
@@ -205,8 +205,8 @@ void grid_initialization() {
  */
 void show_player_grid() {
     printf("     ");
-    for (coord_letter = 'A'; coord_letter <= 'J'; ++coord_letter) {
-        printf("| %c ", coord_letter);
+    for (coordLetter = 'A'; coordLetter <= 'J'; ++coordLetter) {
+        printf("| %c ", coordLetter);
     }
 
     printf("||\n");
@@ -302,34 +302,34 @@ void add_boats() {
  *
  */
 void PlayerInput() {
-    column_input_letter = ' ';       //resets the inputs so it doesn't take the same as the previous round
+    columnInputLetter = ' ';       //resets the inputs so it doesn't take the same as the previous round
     printf("Veuillez choisir une colonne ( de A à J) ou s pour quitter la partie\n");
-    scanf(" %c", &column_input_letter);
-    column_input_letter = tolower(column_input_letter);
-    if (column_input_letter!='s') {
-        while ((column_input_letter - 'a') < 0 || (column_input_letter - 'a' > 9)) {
+    scanf(" %c", &columnInputLetter);
+    columnInputLetter = tolower(columnInputLetter);
+    if (columnInputLetter != 's') {
+        while ((columnInputLetter - 'a') < 0 || (columnInputLetter - 'a' > 9)) {
             emptyBuffer();
             printf("Veuillez choisir une colonne correcte (de A à J) ou s pour quitter la partie \n");
-            scanf(" %c", &column_input_letter);
-            column_input_letter = tolower(column_input_letter);
+            scanf(" %c", &columnInputLetter);
+            columnInputLetter = tolower(columnInputLetter);
         }
-        printf("Colonne choisie : %c\n\n", toupper(column_input_letter));
+        printf("Colonne choisie : %c\n\n", toupper(columnInputLetter));
     }
-    else if (column_input_letter=='s'){printf("Retour au menu principal...\n");
+    else if (columnInputLetter == 's'){printf("Retour au menu principal...\n");
         playerLeaving = true;}
 
 
     if (playerLeaving == false) {
         emptyBuffer();
-        line_input_number = 0;
+        lineInputNumber = 0;
         printf("Veuillez choisir une ligne ( de 1 à 10)\n");
-        scanf(" %d", &line_input_number);
-        while (line_input_number < 1 || line_input_number > 10) {
+        scanf(" %d", &lineInputNumber);
+        while (lineInputNumber < 1 || lineInputNumber > 10) {
             emptyBuffer();
             printf("Veuillez choisir une ligne correcte allant de 1 à 10\n");
-            scanf(" %d", &line_input_number);
+            scanf(" %d", &lineInputNumber);
         }
-        printf("Ligne choisie : %d\n\n", line_input_number);
+        printf("Ligne choisie : %d\n\n", lineInputNumber);
     }
 }
 
@@ -338,25 +338,25 @@ void PlayerInput() {
  *
  */
 void CumputeInput(){
-    playercolumn = column_input_letter - 'a';                   //conversion of the letter to a number
-    playerline = line_input_number -1;                         //conversion from the user's column to the grid's column number
-    if (PlayerDisplayedGrid[playerline][playercolumn] != ' ') { printf("Vous avez déjà joué cette case !\n"); }
-    else if (grid[playerline][playercolumn] > '0' && grid[playerline][playercolumn] <
+    playerColumn = columnInputLetter - 'a';                   //conversion of the letter to a number
+    playerLine = lineInputNumber - 1;                         //conversion from the user's column to the grid's column number
+    if (PlayerDisplayedGrid[playerLine][playerColumn] != ' ') { printf("Vous avez déjà joué cette case !\n"); }
+    else if (grid[playerLine][playerColumn] > '0' && grid[playerLine][playerColumn] <
                                                      '6') {         //compare user input's location with the hidden grid's value to check the result
-        playerGrid[playerline][playercolumn] = grid[playerline][playercolumn];
-        PlayerDisplayedGrid[playerline][playercolumn] = 'X';
+        playerGrid[playerLine][playerColumn] = grid[playerLine][playerColumn];
+        PlayerDisplayedGrid[playerLine][playerColumn] = 'X';
         Hit();
         printf("Vous avez touché un bateau!\n\n");
         score = score + 1;
-        fprintf(logPointer,"Tour %d : Le joueur a touché un bateau!\n",score);
+        fprintf(logPointer,"\nTour %d : Le joueur a touché un bateau!",score);
 
 
-    } else if (grid[playerline][playercolumn] == '0') {
+    } else if (grid[playerLine][playerColumn] == '0') {
         Miss();
         printf("\nVous avez raté!\n\n");
-        fprintf(logPointer,"Tour %d : Le joueur a raté\n",score);
         score = score + 1;
-        PlayerDisplayedGrid[playerline][playercolumn] = 'O';
+        fprintf(logPointer,"\nTour %d : Le joueur a raté",score);
+        PlayerDisplayedGrid[playerLine][playerColumn] = 'O';
     }
 
 
@@ -370,7 +370,7 @@ void CumputeInput(){
  */
 void verification() {
 
-    sunk_boats = 0;
+    sunkBoats = 0;
     int boat1_sunkparts = 0;                     //reset the sunkparts parts before boat1's check
     for (line = 0; line < GRIDHEIGHT; line++) {                         //counts sunk parts to check if boat1 is sunk
         for (column = 0; column < GRIDLENGTH; ++column) {
@@ -380,14 +380,14 @@ void verification() {
         }
     }
     if (boat1_sunkparts == 5) {
-        if (boat1_msg == false)                       //a condition, so it only displays sunk one time
+        if (boat1Msg == false)                       //a condition, so it only displays sunk one time
         {
             Boom();
             printf("Porte-avions coulé!\n");
             fprintf(logPointer,"Tour %d : Le joueur a coulé le Porte-avions \n",score);
-            boat1_msg = true;
+            boat1Msg = true;
         }
-        sunk_boats = sunk_boats + 1;
+        sunkBoats = sunkBoats + 1;
     }
 
 
@@ -401,12 +401,12 @@ void verification() {
     }
 
     if (boat2_sunkparts == 4) {
-        sunk_boats = sunk_boats + 1;
-        if (boat2_msg == false) {
+        sunkBoats = sunkBoats + 1;
+        if (boat2Msg == false) {
             Boom();
             printf("Croiseur coulé \n");
             fprintf(logPointer,"Tour %d : Le joueur a coulé le Croiseur \n",score);
-            boat2_msg = true;
+            boat2Msg = true;
         }
     }
 
@@ -419,12 +419,12 @@ void verification() {
         }
     }
     if (boat3_sunkparts == 3) {
-        sunk_boats = sunk_boats + 1;
-        if (boat3_msg == false) {
+        sunkBoats = sunkBoats + 1;
+        if (boat3Msg == false) {
             Boom();
             printf("Contre-torpilleur 1 coulé \n");
             fprintf(logPointer,"Tour %d : Le joueur a coulé le Contre-torpilleur 1 \n",score);
-            boat3_msg = true;
+            boat3Msg = true;
         }
     }
 
@@ -437,12 +437,12 @@ void verification() {
         }
     }
     if (boat4_sunkparts == 3) {
-        sunk_boats = sunk_boats + 1;
-        if (boat4_msg == false) {
+        sunkBoats = sunkBoats + 1;
+        if (boat4Msg == false) {
             Boom();
             printf("Contre-torpilleur 2 coulé\n");
             fprintf(logPointer,"Tour %d : Le joueur a coulé le Contre-torpilleur 2 \n",score);
-            boat4_msg = true;
+            boat4Msg = true;
         }
     }
 
@@ -456,17 +456,17 @@ void verification() {
         }
     }
     if (boat5_sunkparts == 2) {
-        sunk_boats = sunk_boats + 1;
-        if (boat5_msg == false) {
+        sunkBoats = sunkBoats + 1;
+        if (boat5Msg == false) {
             Boom();
             printf("Torpilleur coulé ! \n");
             fprintf(logPointer,"Tour %d : Le joueur a coulé le Torpilleur \n",score);
-            boat5_msg = true;
+            boat5Msg = true;
         }
 
     }
 
-    if (sunk_boats == 5) { game_over = true; }       //checks the game over with a count
+    if (sunkBoats == 5) { gameOver = true; }       //checks the game over with a count
 
 }
 
@@ -559,7 +559,7 @@ void LogStart(){
     }
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    fprintf(logPointer,"\n\n Début de la partie : %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+    fprintf(logPointer,"\n\nDébut de la partie : %d-%02d-%02d %02d:%02d:%02d\n Nom du Joueur: %s", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, playerName);
 
 
     for (int botSeperator = 0; botSeperator < SEPARATORSIZE; ++botSeperator) {
@@ -611,11 +611,12 @@ void LogLeave(){
 
 }
 
-/** \brief Play - This function plays and ends the game
+/** \brief GameIni - This function initialize a new game
  *
  *
  */
-void Play() {
+void GameIni(){
+    gameOver=false;
     playerLeaving=false;
     score= 0;
     grid_initialization();
@@ -635,20 +636,35 @@ void Play() {
     }
 
     LogStart();
+}
 
-    while (game_over == false) {
+/** \brief BoatMsgReset - This function resets all the variable for the sunk boats
+ *
+ *
+ */
+void BoatMsgReset(){
+    boat1Msg=false;
+    boat2Msg=false;
+    boat3Msg=false;
+    boat4Msg=false;
+    boat5Msg=false;
+    sunkBoats = 0;
+}
+/** \brief Play - This function plays and ends the game
+ *
+ *
+ */
+void Play() {
+    GameIni();
+
+    while (gameOver == false) {
         PlayerInput();
         if(playerLeaving==false) {
             CumputeInput();
             verification();
         }
         else{
-            sunk_boats = 0;
-            boat1_msg=false;
-            boat2_msg=false;
-            boat3_msg=false;
-            boat4_msg=false;
-            boat5_msg=false;
+            BoatMsgReset();
             LogLeave();
             // Closing the log using fclose()
             fclose(logPointer) ;
@@ -664,14 +680,9 @@ void Play() {
         fclose(logPointer) ;
         RegisterScore();
         playerLeaving=true;
-        sunk_boats = 0;
-        boat1_msg=false;
-        boat2_msg=false;
-        boat3_msg=false;
-        boat4_msg=false;
-        boat5_msg=false;
+        BoatMsgReset();
     }
-    GameLoop=1;
+    gameLoop=1;
 }
 
 /** \brief PlayerName - This function lets the player change his name
@@ -740,8 +751,8 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     setbuf(stdout,NULL);
     Bateau();
-    while(GameLoop== 1){// the game loop var let's us avoid a bug where the Menu loops itself before the game is finished
-        GameLoop= 0;
+    while(gameLoop == 1){// the game loop var let's us avoid a bug where the Menu loops itself before the game is finished
+        gameLoop= 0;
         Menu();
 }
 
