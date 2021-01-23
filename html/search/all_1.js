@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['add_5fboats_95',['add_boats',['../main_8c.html#aed8e6f55d25706341d7b6ab92e70b918',1,'main.c']]],
-  ['architecture_5fid_96',['ARCHITECTURE_ID',['../_c_make_c_compiler_id_8c.html#aba35d0d200deaeb06aee95ca297acb28',1,'CMakeCCompilerId.c']]]
+  ['bateau_1',['Bateau',['../main_8c.html#a1f41decc01fc83c646205c74fea02f9d',1,'main.c']]],
+  ['boatmsgreset_2',['BoatMsgReset',['../main_8c.html#aea42c7c9ffe5de5d0f4de0fad28316ff',1,'main.c']]],
+  ['boom_3',['Boom',['../main_8c.html#a73e38336bd209e3ac7520cdc99c77f2e',1,'main.c']]],
+  ['bravo_4',['Bravo',['../main_8c.html#acc9e4dd23958ee7a8ff3c1976e8d26f0',1,'main.c']]]
 ];

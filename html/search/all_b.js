@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['navalbattle_143',['NavalBattle',['../md__naval_battle__rajadurai__r_e_a_d_m_e.html',1,'']]]
+  ['showhelp_23',['ShowHelp',['../main_8c.html#ab180efaa64feefae6244d2c4b4eb7809',1,'main.c']]],
+  ['showplayergrid_24',['ShowPlayerGrid',['../main_8c.html#a1fdbfe7c41cc5c032de1530da8ee47f9',1,'main.c']]],
+  ['showscore_25',['ShowScore',['../main_8c.html#aa206e85513921cd0c8007dac550fd994',1,'main.c']]]
 ];

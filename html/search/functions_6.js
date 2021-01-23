@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['main_184',['main',['../main_8c.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main():&#160;main.c'],['../_c_make_c_compiler_id_8c.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;CMakeCCompilerId.c']]],
-  ['menu_185',['Menu',['../main_8c.html#afdf1ca9e7afc3e7ec41b47fea4b3d80d',1,'main.c']]],
-  ['miss_186',['Miss',['../main_8c.html#a165325fc476693829a0d67abb00df2d9',1,'main.c']]]
+  ['logend_38',['LogEnd',['../main_8c.html#abfeb4168522ba917fc355dab74361105',1,'main.c']]],
+  ['logleave_39',['LogLeave',['../main_8c.html#aa09d1a16ffad3e0c3db0fd08de5cff2b',1,'main.c']]],
+  ['logstart_40',['LogStart',['../main_8c.html#a04acb2c7c443f539e2fc8fa0937fc805',1,'main.c']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['dec_122',['DEC',['../_c_make_c_compiler_id_8c.html#ad1280362da42492bbc11aa78cbf776ad',1,'CMakeCCompilerId.c']]]
+  ['gameini_7',['GameIni',['../main_8c.html#aaaf5dae1be731973e8acab2bc381c6fe',1,'main.c']]],
+  ['gridinitialization_8',['GridInitialization',['../main_8c.html#a552b87d34ab9fbae568d8c1f48f045c1',1,'main.c']]]
 ];

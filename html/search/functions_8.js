@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['show_5fhelp_189',['show_help',['../main_8c.html#ac29c297ae32acdb2172e926d5f144681',1,'main.c']]],
-  ['show_5fplayer_5fgrid_190',['show_player_grid',['../main_8c.html#a5922204efef501d7928d3a49597dfb42',1,'main.c']]]
+  ['play_45',['Play',['../main_8c.html#a12574569144fb9d22d996965ee42b627',1,'main.c']]],
+  ['playerinput_46',['PlayerInput',['../main_8c.html#abe2e512fe75db771ba00bf1f74edd3bf',1,'main.c']]],
+  ['playernamesetting_47',['PlayerNameSetting',['../main_8c.html#a6d784c8ecdefbd5cb01f1ba34dffbdd3',1,'main.c']]]
 ];

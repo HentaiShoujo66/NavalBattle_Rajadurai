@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['verification_191',['verification',['../main_8c.html#aae29ed76d36110fad499fc9761689e73',1,'main.c']]]
+  ['registerscore_48',['RegisterScore',['../main_8c.html#af4c108b98b5c1e559724b05e1e0958c6',1,'main.c']]]
 ];
