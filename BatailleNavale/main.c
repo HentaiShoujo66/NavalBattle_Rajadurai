@@ -596,7 +596,7 @@ void Play() {
  */
  void PlayerNameSetting(){
      printf("Veuillez entrez un pseudo: (seul les 15 premiers charactères seront pris ! )\n");
-     scanf("%s", &playerName);
+     scanf("%15s", &playerName);
      printf("Le pseudo du joueur est désormais: %s \n", playerName);
 
 
