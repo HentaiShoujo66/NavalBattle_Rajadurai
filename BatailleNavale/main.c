@@ -1,8 +1,13 @@
-/****************************************
-*   Title   :   [Battleship]   *
-*   Author  :   [Rajadurai - Thirusan]      *
-*   Version :   [1.0]            *
-****************************************/
+/**
+ * \file      main.c
+ * \author    Thirusan
+ * \version   1.0
+ * \date      23-01-2021
+ * \brief     Battleship Game
+ *
+ * \details    This game registers the scores and logs in external files. It also takes the game map randomly from a grid folder.
+ */
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -160,7 +165,7 @@ void Bateau() {
  */
 void ShowHelp() {
     int HelpStop;
-    printf("\n\n\nAIDE__________________________\n"
+    printf("\n\nAIDE__________________________\n"
            "Règles de la bataille navale :\n"
            "La bataille navale oppose deux joueurs qui s'affrontent. Chacun a une flotte composée de 5 bateaux, qui sont,\nen général, les suivants : 1 porte-avion (5 cases), 1 croiseur (4 cases), 1 contre-torpilleur (3 cases),\n1 sous-marin (3 cases), 1 torpilleur (2 cases).Les bateaux ne doivent pas être collés entre eux. Au début du jeu,\nchaque joueur place ses bateaux sur sa grille.\nCelle-ci est toujours numérotée de 1 à 10 verticalement et de A à J horizontalement. Un à un, les joueurs vont \"tirer\"\nsur une case de l'adversaire : par exemple, B.3 ou encore H.8. Le but est donc de couler les bateaux adverses."
            "\nDans cette version de la bataille navale, vous jouerez contre l'ordinateur,\nvous n'aurez qu'à entrer les coordonnées comme demandé et à les valider tour par tour.\n"
@@ -388,7 +393,7 @@ void Verification() {
         {
             Boom();
             printf("Porte-avions coulé!\n");
-            fprintf(logPointer,"Tour %d : Le joueur a coulé le Porte-avions \n",score);
+            fprintf(logPointer," \nTour %d : Le joueur a coulé le Porte-avions",score);
             boat1Msg = true;
         }
         sunkBoats = sunkBoats + 1;
@@ -409,7 +414,7 @@ void Verification() {
         if (boat2Msg == false) {
             Boom();
             printf("Croiseur coulé \n");
-            fprintf(logPointer,"Tour %d : Le joueur a coulé le Croiseur \n",score);
+            fprintf(logPointer,"\nTour %d : Le joueur a coulé le Croiseur",score);
             boat2Msg = true;
         }
     }
@@ -427,7 +432,7 @@ void Verification() {
         if (boat3Msg == false) {
             Boom();
             printf("Contre-torpilleur 1 coulé \n");
-            fprintf(logPointer,"Tour %d : Le joueur a coulé le Contre-torpilleur 1 \n",score);
+            fprintf(logPointer,"\nTour %d : Le joueur a coulé le Contre-torpilleur 1",score);
             boat3Msg = true;
         }
     }
@@ -445,7 +450,7 @@ void Verification() {
         if (boat4Msg == false) {
             Boom();
             printf("Contre-torpilleur 2 coulé\n");
-            fprintf(logPointer,"Tour %d : Le joueur a coulé le Contre-torpilleur 2 \n",score);
+            fprintf(logPointer,"\nTour %d : Le joueur a coulé le Contre-torpilleur 2",score);
             boat4Msg = true;
         }
     }
@@ -464,7 +469,7 @@ void Verification() {
         if (boat5Msg == false) {
             Boom();
             printf("Torpilleur coulé ! \n");
-            fprintf(logPointer,"Tour %d : Le joueur a coulé le Torpilleur \n",score);
+            fprintf(logPointer,"\nTour %d : Le joueur a coulé le Torpilleur",score);
             boat5Msg = true;
         }
 
@@ -495,7 +500,7 @@ void RegisterScore(){
     else
     {
 
-        fprintf(filePointer,"%s                                     %d\n",playerName,score);
+        fprintf(filePointer,"\n%s                                     %d",playerName,score);
 
 
         // Closing the file using fclose()
@@ -563,13 +568,14 @@ void LogStart(){
     }
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    fprintf(logPointer,"\n\nDébut de la partie : %d-%02d-%02d %02d:%02d:%02d\n Nom du Joueur: %s", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, playerName);
+    fprintf(logPointer,"\n\nDébut de la partie : %d-%02d-%02d %02d:%02d:%02d\nNom du Joueur: %s\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, playerName);
 
 
     for (int botSeperator = 0; botSeperator < SEPARATORSIZE; ++botSeperator) {
         fprintf(logPointer,"__");
 
     }
+    fprintf(logPointer,"\n");
 
 }
 
@@ -578,6 +584,7 @@ void LogStart(){
  *
  */
 void LogEnd(){
+    fprintf(logPointer,"\n");
     for (int topSeperator = 0; topSeperator < SEPARATORSIZE; ++topSeperator) {
         fprintf(logPointer,"__");
 
@@ -599,6 +606,7 @@ void LogEnd(){
  *
  */
 void LogLeave(){
+    fprintf(logPointer,"\n");
     for (int topSeperator = 0; topSeperator < SEPARATORSIZE; ++topSeperator) {
         fprintf(logPointer,"__");
 
